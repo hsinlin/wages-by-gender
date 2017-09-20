@@ -3,24 +3,34 @@
   <h1>
     City of Seattle Wages: Comparison by Gender
   </h1>
+  <div class="dropdown float-right">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Dropdown button
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+    </div>
+  </div>
   <table class="table table-hover" *ngIf="data">
     <thead>
       <tr>
         <th>#</th>
         <th>
           Job Title
-          <span class="glyphicon glyphicon-triangle-bottom" (click)="sortBy('title', 'desc')"></span>
-          <span class="glyphicon glyphicon-triangle-top" (click)="sortBy('title')"></span>
+          <span class="fa fa-caret-down" (click)="sortBy('title', 'desc')"></span>
+          <span class="fa fa-caret-up" (click)="sortBy('title')"></span>
         </th>
         <th>
           Female Avg Hrly Rate
-          <span class="glyphicon glyphicon-triangle-bottom" (click)="sortBy('femaleWages', 'desc')"></span>
-          <span class="glyphicon glyphicon-triangle-top" (click)="sortBy('femaleWages')"></span>
+          <span class="fa fa-caret-down" (click)="sortBy('femaleWages', 'desc')"></span>
+          <span class="fa fa-caret-up" (click)="sortBy('femaleWages')"></span>
         </th>
         <th>
           Male Avg Hrly Rate
-          <span class="glyphicon glyphicon-triangle-bottom" (click)="sortBy('maleWages', 'desc')"></span>
-          <span class="glyphicon glyphicon-triangle-top" (click)="sortBy('maleWages')"></span>
+          <span class="fa fa-caret-down" (click)="sortBy('maleWages', 'desc')"></span>
+          <span class="fa fa-caret-up" (click)="sortBy('maleWages')"></span>
         </th>
       </tr>
     </thead>
