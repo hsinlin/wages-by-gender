@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map'
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-root',
@@ -16,27 +17,23 @@ export class AppComponent {
 
   public sortBy(column, order = 'asc') {
     if(!['title', 'femaleWages', 'maleWages'].includes(column)) return;
-    console.info(order === 'desc')
 
-    this.data.sort((a, b) => {
-      let itemA, itemB;
-      if(column === 'title') {
-        if(order === 'desc') return a[8] < b[8];
-        else return a[8] > b[8];
-      } else if(column === 'femaleWages') {
-        itemA = a[9];
-        itemB = b[9];
-      } else if (column === 'maleWages') {
-        itemA = a[12];
-        itemB = b[12];
-      }
+    if(column === 'title') {
+      this.data = _.orderBy(this.data, [8], [order]);
+    } else {
+      this.data.sort((a, b) => {
+        let index = 0, diff = 0;
+        if(column === 'femaleWages') {
+          index = 9;
+        } else if (column === 'maleWages') {
+          index = 12;
+        }
 
-      if(order === 'desc') {
-        return itemB - itemA;
-      } else {
-        return itemA - itemB;
-      }
-    });
+        diff = a[index] - b[index];
+
+        return (order === 'asc') ? diff : -diff;
+      });
+    }
   }
 
   private getWagesByGender() {
