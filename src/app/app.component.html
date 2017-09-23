@@ -16,7 +16,6 @@
   <table class="table table-hover" *ngIf="data">
     <thead>
       <tr>
-        <th>#</th>
         <th>
           Job Title
           <span class="fa fa-caret-down" (click)="sortBy('title', 'desc')"></span>
@@ -36,7 +35,6 @@
     </thead>
     <tbody>
       <tr *ngFor="let d of data">
-        <th scope="row">{{d[0]}}</th>
         <td>{{d[8]}}</td>
         <td>{{d[9]}}</td>
         <td>{{d[12]}}</td>

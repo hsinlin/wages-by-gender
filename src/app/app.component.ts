@@ -25,9 +25,9 @@ export class AppComponent {
     if(!['title', 'femaleWages', 'maleWages'].includes(column)) return;
 
     if(column === 'title') {
-      this.data = _.orderBy(this.data, [8], [order]);
+      this.fullData = _.orderBy(this.fullData, [8], [order]);
     } else {
-      this.data.sort((a, b) => {
+      this.fullData.sort((a, b) => {
         let index = 0, diff = 0;
         if(column === 'femaleWages') {
           index = 9;
@@ -40,6 +40,8 @@ export class AppComponent {
         return (order === 'asc') ? diff : -diff;
       });
     }
+
+    this.getWagesData();
   }
 
   goToPage(n: number): void {
