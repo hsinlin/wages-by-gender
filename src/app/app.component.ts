@@ -10,6 +10,7 @@ import * as _ from "lodash";
 })
 export class AppComponent {
   data = null;
+  filteredData = null;
   fullData = null;
 
   loading = false;
@@ -24,10 +25,12 @@ export class AppComponent {
   sortBy(column, order = 'asc') {
     if(!['title', 'femaleWages', 'maleWages'].includes(column)) return;
 
+    let data = (this.filteredData) ? this.filteredData : this.fullData;
+
     if(column === 'title') {
-      this.fullData = _.orderBy(this.fullData, [8], [order]);
+      data = _.orderBy(this.fullData, [8], [order]);
     } else {
-      this.fullData.sort((a, b) => {
+      data.sort((a, b) => {
         let index = 0, diff = 0;
         if(column === 'femaleWages') {
           index = 9;
@@ -41,7 +44,19 @@ export class AppComponent {
       });
     }
 
-    this.getWagesData();
+    this.getWagesData(data);
+  }
+
+  filterBy(type) {
+    if(type === 'menMore') {
+       this.filteredData = this.fullData.filter((d) => d[12] > d[9]);
+    } else if(type === 'womenMore') {
+      this.filteredData = this.fullData.filter((d) => d[9] > d[12]);
+    }
+
+    this.total = this.filteredData.length;
+    this.page = 1;
+    this.getWagesData(this.filteredData);
   }
 
   goToPage(n: number): void {
@@ -61,9 +76,9 @@ export class AppComponent {
     this.getWagesData();
   }
 
-  getWagesData() {
+  getWagesData(data = this.fullData) {
     let s = (this.page - 1) * this.limit;
-    this.data = this.fullData.slice(s, s+this.limit-1);
+    this.data = data.slice(s, s+this.limit-1);
   }
 
   private getWagesByGender() {
