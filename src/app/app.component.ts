@@ -28,9 +28,9 @@ export class AppComponent {
     let data = (this.filteredData) ? this.filteredData : this.fullData;
 
     if(column === 'title') {
-      data = _.orderBy(this.fullData, [8], [order]);
+      this.filteredData = _.orderBy(data, [8], [order]);
     } else {
-      data.sort((a, b) => {
+      this.filteredData = data.sort((a, b) => {
         let index = 0, diff = 0;
         if(column === 'femaleWages') {
           index = 9;
@@ -44,19 +44,32 @@ export class AppComponent {
       });
     }
 
-    this.getWagesData(data);
+    this.getWagesData();
   }
 
-  filterBy(type) {
+  filterBy(type, val = null) {
     if(type === 'menMore') {
        this.filteredData = this.fullData.filter((d) => d[12] > d[9]);
     } else if(type === 'womenMore') {
       this.filteredData = this.fullData.filter((d) => d[9] > d[12]);
+    } else if(type === 'minGap') {
+      this.filteredData = this.fullData.filter((d) => {
+        let diff = Math.abs(d[9] - d[12]);
+
+        return diff > val && d[9] !== null && d[12] !== null;
+      });
+    } else if(type === 'gapPercentage') {
+      this.filteredData = this.fullData.filter((d) => {
+        let diff = Math.abs(d[9] - d[12]);
+
+        return d[9] !== null && d[12] !== null
+          && diff / Math.min(d[9], d[12]) > 0.05;
+      })
     }
 
     this.total = this.filteredData.length;
     this.page = 1;
-    this.getWagesData(this.filteredData);
+    this.getWagesData();
   }
 
   goToPage(n: number): void {
@@ -76,8 +89,10 @@ export class AppComponent {
     this.getWagesData();
   }
 
-  getWagesData(data = this.fullData) {
-    let s = (this.page - 1) * this.limit;
+  getWagesData() {
+    let s = (this.page - 1) * this.limit,
+        data = (this.filteredData) ? this.filteredData : this.fullData;
+
     this.data = data.slice(s, s+this.limit-1);
   }
 

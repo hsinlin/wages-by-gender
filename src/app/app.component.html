@@ -3,18 +3,24 @@
   <h1 class="my-3 float-left">
     City of Seattle Wages: Comparison by Gender
   </h1>
-  <div class="dropdown my-3 float-right">
-    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Filter
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item" (click)="filterBy('menMore')" href="#">jobs men make more</a>
-      <a class="dropdown-item" (click)="filterBy('womenMore')" href="#">jobs women make more</a>
-      <a class="dropdown-item" href="#">Another action</a>
-      <a class="dropdown-item" href="#">Something else here</a>
+  <div class="col-md-12 my-4">
+    <div class="input-group">
+      <div class="input-group-btn">
+        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Filter
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" (click)="filterBy('menMore')" href="#">Jobs men make more</a>
+          <a class="dropdown-item" (click)="filterBy('womenMore')" href="#">Jobs women make more</a>
+          <a class="dropdown-item" (click)="filteredMinGap=true"href="#">Minimum Gap</a>
+          <a class="dropdown-item" (click)="filteredPercentageGap=true" href="#">Gap percentage</a>
+        </div>
+      </div>
+      <input #minGap type="text" class="form-control" *ngIf="filteredMinGap" (keyup.enter)="filterBy('minGap', minGap.value)" placeholder="show me only those jobs where the difference in pay is at least  ___ . (please enter a number)" aria-label="Text input with dropdown button">
+      <input type="text" class="form-control" *ngIf="filteredPercentageGap" (click)="filterBy('percentageGap')" aria-label="Text input with dropdown button">
     </div>
   </div>
-  <table class="table table-hover" *ngIf="data">
+  <table class="table table-hover">
     <thead>
       <tr>
         <th>
@@ -34,7 +40,7 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="data"></tbody>
       <tr *ngFor="let d of data">
         <td>{{d[8]}}</td>
         <td>{{d[9]}}</td>
@@ -42,6 +48,7 @@
       </tr>
     </tbody>
   </table>
+  <p *ngIf="total === 0">There is no related data.</p>
 
   <app-pagination
     (goPage)="goToPage($event)"
