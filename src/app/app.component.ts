@@ -52,19 +52,30 @@ export class AppComponent {
        this.filteredData = this.fullData.filter((d) => d[12] > d[9]);
     } else if(type === 'womenMore') {
       this.filteredData = this.fullData.filter((d) => d[9] > d[12]);
-    } else if(type === 'minGap') {
-      this.filteredData = this.fullData.filter((d) => {
-        let diff = Math.abs(d[9] - d[12]);
+    } else if(type === 'minValGap') {
+      if(val <= 0) {
+        this.filteredData = [];
+      } else {
+        this.filteredData = this.fullData.filter((d) => {
+          let diff = Math.abs(d[9] - d[12]);
 
-        return diff > val && d[9] !== null && d[12] !== null;
-      });
-    } else if(type === 'gapPercentage') {
-      this.filteredData = this.fullData.filter((d) => {
-        let diff = Math.abs(d[9] - d[12]);
+          return d[9] !== null && d[12] !== null
+            && diff > val;
+        });
+      }
+    } else if(type === 'minPercentageGap') {
+      if(val <= 0) {
+        this.filteredData = [];
+      } else {
+        val = parseFloat(val) / 100.0;
 
-        return d[9] !== null && d[12] !== null
-          && diff / Math.min(d[9], d[12]) > 0.05;
-      })
+        this.filteredData = this.fullData.filter((d) => {
+          let diff = Math.abs(d[9] - d[12]);
+
+          return d[9] !== null && d[12] !== null
+            && diff / Math.min(d[9], d[12]) > val;
+        });
+      }
     }
 
     this.total = this.filteredData.length;
