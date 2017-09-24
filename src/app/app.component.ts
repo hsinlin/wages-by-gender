@@ -13,6 +13,9 @@ export class AppComponent {
   filteredData = null;
   fullData = null;
 
+  showingMinValGapInput = false;
+  showingPercentageInput = false;
+
   loading = false;
   total = 0;
   page = 1;
