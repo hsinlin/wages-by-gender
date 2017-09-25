@@ -1,23 +1,21 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div class="container">
-  <h1 class="my-3 float-left">
-    City of Seattle Wages: Comparison by Gender
+  <h1 class="my-5 text-center">
+    <a class="text-primary" href="/">City of Seattle Wages: Comparison by Gender</a>
   </h1>
   <div class="col-md-12 my-4">
     <div class="input-group">
       <div class="input-group-btn">
-        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Filter
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" (click)="filterBy('menMore')" href="#">Jobs men make more</a>
           <a class="dropdown-item" (click)="filterBy('womenMore')" href="#">Jobs women make more</a>
-          <a class="dropdown-item" (click)="showingMinValGapInput=true;showingPercentageInput=false" href="#">Minimum gap value</a>
-          <a class="dropdown-item" (click)="showingPercentageInput=true;showingMinValGapInput=false" href="#">Min gap percentage</a>
+          <a class="dropdown-item" (click)="showFilterInput(true, 'minGapValue')" href="#">Minimum gap value</a>
+          <a class="dropdown-item" (click)="showFilterInput(true, 'minGapPercentage')" href="#">Min gap percentage</a>
         </div>
       </div>
-      <input #minValGap type="text" class="form-control" *ngIf="showingMinValGapInput" (keyup.enter)="filterBy('minValGap', minValGap.value)" placeholder="show me only those jobs where the difference in pay is at least  ___ . (please enter a number)" aria-label="Text input with dropdown button">
-      <input #minPerGap type="text" class="form-control" *ngIf="showingPercentageInput" (keyup.enter)="filterBy('minPercentageGap', minPerGap.value)" placeholder="show me only those jobs where the difference in pay is at least  ___% . (please enter a number)" aria-label="Text input with dropdown button">
+      <input #minGap type="text" class="form-control" *ngIf="showingMinGapInput" (keyup.enter)="filterBy(filterType, minGap.value)" placeholder="{{minGapPlaceholder}}" aria-label="Text input with dropdown button">
     </div>
   </div>
   <table class="table table-hover">
@@ -48,7 +46,7 @@
       </tr>
     </tbody>
   </table>
-  <p *ngIf="total === 0">There is no related data.</p>
+  <p *ngIf="total === 0" class="text-center my-5">There is no related data.</p>
 
   <app-pagination
     (goPage)="goToPage($event)"

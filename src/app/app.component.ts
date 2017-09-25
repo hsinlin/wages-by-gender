@@ -13,8 +13,9 @@ export class AppComponent {
   filteredData = null;
   fullData = null;
 
-  showingMinValGapInput = false;
-  showingPercentageInput = false;
+  filterType = '';
+  showingMinGapInput = false;
+  minGapPlaceholder = null;
 
   loading = false;
   total = 0;
@@ -50,26 +51,34 @@ export class AppComponent {
     this.getWagesData();
   }
 
+  showFilterInput(flag, type) {
+    this.showingMinGapInput = !!flag;
+    this.filterType = type;
+    if(type === 'minGapValue') {
+      this.minGapPlaceholder = 'show me only those jobs where the difference in pay is at least  ___ . (please enter a number)';
+    } else if(type === 'minGapPercentage') {
+      this.minGapPlaceholder = 'show me only those jobs where the difference in pay is at least  ___ % . (please enter a number)';
+    }
+  }
+
   filterBy(type, val = null) {
     if(type === 'menMore') {
-       this.filteredData = this.fullData.filter((d) => d[12] > d[9]);
+      this.showingMinGapInput = false;
+      this.filteredData = this.fullData.filter((d) => d[12] > d[9]);
     } else if(type === 'womenMore') {
+      this.showingMinGapInput = false;
       this.filteredData = this.fullData.filter((d) => d[9] > d[12]);
-    } else if(type === 'minValGap') {
+    } else {
       if(val <= 0) {
         this.filteredData = [];
-      } else {
+      } else if(type === 'minGapValue') {
         this.filteredData = this.fullData.filter((d) => {
           let diff = Math.abs(d[9] - d[12]);
 
           return d[9] !== null && d[12] !== null
             && diff > val;
         });
-      }
-    } else if(type === 'minPercentageGap') {
-      if(val <= 0) {
-        this.filteredData = [];
-      } else {
+      } else if(type === 'minGapPercentage') {
         val = parseFloat(val) / 100.0;
 
         this.filteredData = this.fullData.filter((d) => {
