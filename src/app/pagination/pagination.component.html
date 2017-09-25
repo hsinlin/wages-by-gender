@@ -1,7 +1,9 @@
-<div class="float-left mt-3" *ngIf="count > 0">Showing {{ getMin() }} to {{ getMax() }} of {{ count }} entries</div>
+<div class="mt-2 text-primary" *ngIf="count > 0">
+  Showing {{ getMin() }} to {{ getMax() }} of {{ count }} entries
+</div>
 
 <nav aria-label="Page navigation">
-  <ul class="pagination justify-content-end" *ngIf="count > 0">
+  <ul class="pagination justify-content-center" *ngIf="count > 0">
     <li class="page-item" (click)="onPrev()" [ngClass]="{'disabled': page === 1 || loading}">
       <a class="page-link" href="#" tabindex="-1">Previous</a>
     </li>
